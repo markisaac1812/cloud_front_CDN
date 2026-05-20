@@ -1,77 +1,81 @@
 <img src="https://cdn.prod.website-files.com/677c400686e724409a5a7409/6790ad949cf622dc8dcd9fe4_nextwork-logo-leather.svg" alt="NextWork" width="300" />
 
-# Website Delivery with CloudFront
+# APIs with Lambda + API Gateway
 
-**Project Link:** [View Project](http://learn.nextwork.org/projects/aws-networks-cloudfront)
+**Project Link:** [View Project](http://learn.nextwork.org/projects/aws-compute-api)
 
 **Author:** Mark Isaac  
 **Email:** markisaac695@gmail.com
 
 ---
 
-## Website Delivery with CloudFront
+![Image](http://learn.nextwork.org/vibrant_pink_mysterious_chico/uploads/aws-compute-api_c9d0e1f2)
 
 ---
 
 ## Introducing Today's Project!
 
-In this project, I will demonstrate Three tier arch. I'm doing this project to learn about how can a website including frontend , backend and database comunciate each other to represent  abeautiful website wit low latency 
+In this project, I will demonstrate the application layer or what is know by Backend in three tier architecture .I'm doing this project to learn how like an actual webiste from elements and styling to querying from a database actual deployed in the real world
 
 ### Tools and concepts
 
+Services I used were API gateway as well as lambda function. Key concepts I learnt include Lambda functions about how can i run a code when action is triggered like in my case when someone enter an ID and click on the button , a GET request will be sent to lambda to process 
+
 ### Project reflection
 
----
+This project took me approximately 1 hour. The most challenging part was understand lamda proxy integration in API gateway.
 
-## Set Up S3 and Website Files
-
-I started the project by creating an S3 bucket to store our files. I can't use CloudFront for this task because CloudFront is not a storage service 
-
-The three files that make up my website are index.html, which act as main entry point for my website containg all attributed and elements ,style.css which act as responsie and colorful part of the website (colors,design etc) and script.js, which act as brain of the website have all function that user my interact with
-
-I validated that my website files work by opnening each file and saw the code of the . and for index.html it open in  my vrowser
-
-![Image](http://learn.nextwork.org/vibrant_pink_mysterious_chico/uploads/aws-networks-cloudfront_qgo7wcd3)
+I chose to do this project today because i wanted how an actual website is made starting from simple html elements to querying data from a database..
 
 ---
 
-## Exploring Amazon CloudFront
+## Lambda functions
 
-Amazon CloudFront is a content delivery network, which means it speeds up the distriobution of your statc files. Businesses and developers use CloudFront because it imporves performances and ensure a low latency connection
+AWS Lambda is SERVERLESS computing service . which means in simple words running a code in response to some event on a server you dont buy or manadge. I'm using Lambda in this project to fetch some data about user from a database via API gateway
 
-To use Amazon CloudFront, you set up distributions, which are like settings or instructions to my CDN. I set up a distribution for my CDN so that it knows what do if my file requsted not in cached. The origin is like the warehouse of your data in my case it is S3 bucket that itr acts as my warehouse
+The code I added to my function will set up a Lambda function that retrieves data from a DynamoDB table.
 
-My CloudFront distribution's default root object is index.html . This means when someone visits my url they will see the content my webpage
+It looks for specific user data based on a 'userId' and returns that data. If there's an error e.g. the userId doesn't exist in the database, it returns an error message
 
-![Image](http://learn.nextwork.org/vibrant_pink_mysterious_chico/uploads/aws-networks-cloudfront_qgo7wcdt)
-
----
-
-## Handling Access Issues
-
-When I tried visiting my distributed website, I ran into an access denied error because i didnt give my CDN permission to access S3 bucket files
-
-To resolve the error, I set up origin access control (OAC). OAC is like a sepcial user that says "hey the S3 bucket stays private and inaccessible to the world, but CloudFront is allowed to access the files.”
-
-![Image](http://learn.nextwork.org/vibrant_pink_mysterious_chico/uploads/aws-networks-cloudfront_egrhntyu)
+![Image](http://learn.nextwork.org/vibrant_pink_mysterious_chico/uploads/aws-compute-api_a1b2c3d5)
 
 ---
 
-## Updating S3 Permissions
+## API Gateway
 
-Once I set up my OAC, I still needed to update my bucket policy because its objects are still private to anyone including cloudfront
+APIs are Application Programming Interface  that enable diffrent pieces of software to talk to each other. There are different types of APIs, like GraphQL My API is on the other hand is REST .
 
-Creating an OAC automatically gives me a policy I could copy, which grants me access to paste in S3 bucket policy to accees it
+Amazon API Gateway is like a Front door for all my backend apis in my case it is my lambda function. I'm using API Gateway in this project so it can recieves requests and route it to the appropiate lambdas function to execute the code and handle back the response to display in UI
 
-![Image](http://learn.nextwork.org/vibrant_pink_mysterious_chico/uploads/aws-networks-cloudfront_eg98ntyu)
+When a user makes a request the api gateway takes that request and pass it to the appropiate lambda function . then the lamdba function process that request execute the code and handle back the resposne to the api gateway
 
----
-
-## S3 vs CloudFront for Hosting
+![Image](http://learn.nextwork.org/vibrant_pink_mysterious_chico/uploads/aws-compute-api_m3n4o5p6)
 
 ---
 
-## S3 vs CloudFront Load Times
+## API Resources and Methods
+
+API resources are individual endpoints within your API that handle different parts of its functionality.
+
+Each resource consists of methods, which are GET for retrieving data (insecure btw) , POST for adding new data , PUT or PATCH for updating existing data and finally DELETE for deleting existing data.
+
+I created a GET method . so now when user enter an ID , it sent this request to an API gateway using get request because it wants to RETRIEVE data then it maps this request to my lambda function to process the get request
+
+![Image](http://learn.nextwork.org/vibrant_pink_mysterious_chico/uploads/aws-compute-api_c9d0e1f2)
+
+---
+
+## API Deployment
+
+When you deploy an API, you deploy it to a specific stage. A stage is a stage is a snapshot of your API at a specific point in time. I deployed it to production stage but normally in teams they usually have dev ,test,prod stages of APIs
+
+To visit my API, I go to invoke URL .  The API displayed an error because i have not set up my dynamo DB yet
+
+![Image](http://learn.nextwork.org/vibrant_pink_mysterious_chico/uploads/aws-compute-api_3ethryj2)
+
+---
+
+## API Documentation
 
 ---
 
